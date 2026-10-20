@@ -29,11 +29,11 @@ Options:
   -h, --help            show this help
 
 Env:
-  TG_API_ID, TG_API_HASH, TG_SESSION (or TG_STRING_SESSION), TG_BOT_TOKEN, TG_TARGET, TG_GROUP_ID
+  TG_API_ID, TG_API_HASH, TG_SESSION (or TG_STRING_SESSION), TG_BOT_TOKEN, TG_TARGET
 
 Examples:
   ./src/index.ts upload @mygroup ./backup.tar.gz
   ./src/index.ts upload -4674583959 ~/Photos/2026-07/ --level 7
   ./src/index.ts upload -4674583959 ./huge-file.iso --volume-size 2000m
-  TG_GROUP_ID=-4674583959 ./src/index.ts upload ./a.zip --dry-run`);
+  TG_TARGET=-4674583959 ./src/index.ts upload ./a.zip --dry-run`);
 }

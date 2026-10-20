@@ -42,7 +42,7 @@ export function parseArgs(argv: string[]): FilesArgs {
     process.exit(1);
   }
   if (!target) {
-    console.error("Missing target. Pass one or set TG_TARGET / TG_GROUP_ID in .env.\n");
+    console.error("Missing target. Pass one or set TG_TARGET in .env.\n");
     printFilesUsage();
     process.exit(1);
   }

@@ -64,11 +64,5 @@ export function requireAuth(): { sessionStr: string; botToken: string } {
 }
 
 export function getEnvTarget(): string {
-  return (
-    process.env.TG_TARGET ||
-    process.env.TG_GROUP_ID ||
-    process.env.TG_GROUP ||
-    process.env.TG_CHAT ||
-    ""
-  );
+  return process.env.TG_TARGET || process.env.TG_GROUP || process.env.TG_CHAT || "";
 }

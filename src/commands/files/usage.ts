@@ -6,7 +6,7 @@ export function printFilesUsage(): void {
   ./src/index.ts files [target] [--limit <n>]
 
 Lists documents in a chat as: <message-id> <size> <date> <filename>
-The target defaults to TG_TARGET / TG_GROUP_ID from .env.
+The target defaults to TG_TARGET from .env.
 
 Examples:
   ./src/index.ts files

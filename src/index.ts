@@ -49,7 +49,7 @@ Commands:
     ./src/index.ts login --help
 
 Env:
-  TG_API_ID, TG_API_HASH, TG_SESSION (or TG_STRING_SESSION), TG_BOT_TOKEN, TG_TARGET, TG_GROUP_ID`);
+  TG_API_ID, TG_API_HASH, TG_SESSION (or TG_STRING_SESSION), TG_BOT_TOKEN, TG_TARGET`);
 }
 
 const [cmd, ...rest] = process.argv.slice(2);

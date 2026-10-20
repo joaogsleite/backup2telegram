@@ -6,7 +6,7 @@ export function printDownloadUsage(): void {
   ./src/index.ts download [target] <message-id> [output-path]
 
 Downloads the document attached to a message. The target defaults to
-TG_TARGET / TG_GROUP_ID from .env. Use the files command to find ids.
+TG_TARGET from .env. Use the files command to find ids.
 If output-path is a directory, the original filename is kept inside it.
 Without output-path, the file is saved under its original name.
 

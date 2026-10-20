@@ -78,7 +78,7 @@ export function parseArgs(argv: string[]): Args {
     return args; // -> "Missing upload target." in validation below
   }
   // With a default target configured, leading local paths are files, not
-  // the target: `upload ./dir ./file` uses TG_TARGET/TG_GROUP_ID.
+  // the target: `upload ./dir ./file` uses TG_TARGET.
   // An explicit target still wins: `upload @group ./file`.
   if (envTarget && existsSync(positionals[0])) {
     args.target = envTarget;
