@@ -1,5 +1,5 @@
 /**
- * List dialogs (chats) visible to the account, with their upload-ready ids.
+ * List chats (dialogs) visible to the account, with their upload-ready ids.
  * Called by ./index.ts - not directly executable.
  */
 import { Api } from "teleproto";
@@ -11,11 +11,11 @@ import {
 } from "./env.js";
 import { connectForUpload, createClient } from "./telegram.js";
 
-export function printListUsage(): void {
+export function printChatsUsage(): void {
   console.log(`Usage:
-  ./src/index.ts list [--limit <n>]
+  ./src/index.ts chats [--limit <n>]
 
-Prints your dialogs as: <marked-id> (<type>) <title>
+Prints your chats as: <marked-id> (<type>) <title>
 Use the marked id as the upload target, e.g.:
   ./src/index.ts upload -1001234567890 ./backup.tar.gz`);
 }
@@ -38,9 +38,9 @@ function peerType(dialog: Dialog): string {
   return "unknown";
 }
 
-export async function runList(argv: string[]): Promise<void> {
+export async function runChats(argv: string[]): Promise<void> {
   if (argv.includes("-h") || argv.includes("--help")) {
-    printListUsage();
+    printChatsUsage();
     return;
   }
   let limit = 100;

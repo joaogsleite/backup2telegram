@@ -6,8 +6,10 @@
   "type": "module",
   "scripts": {
     "upload": "tsx ./src/index.ts upload",
+    "download": "tsx ./src/index.ts download",
+    "files": "tsx ./src/index.ts files",
+    "chats": "tsx ./src/index.ts chats",
     "login": "tsx ./src/index.ts login",
-    "list": "tsx ./src/index.ts list",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -11,6 +11,8 @@ import {
   getSessionStr,
   requireApiCredentials,
 } from "./env.js";
+import { formatBytes, formatDuration } from "./format.js";
+import { createProgressBar } from "./progress.js";
 import { connectForUpload, createClient } from "./telegram.js";
 
 type Args = {
@@ -140,28 +142,6 @@ export async function runUpload(argv: string[]): Promise<void> {
 
   const client = createClient(sessionStr, apiId, apiHash);
 
-  function formatBytes(bytes: number): string {
-    if (!Number.isFinite(bytes) || bytes < 0) return "?";
-    const units = ["B", "KB", "MB", "GB", "TB"];
-    let value = bytes;
-    let unit = 0;
-    while (value >= 1000 && unit < units.length - 1) {
-      value /= 1024;
-      unit++;
-    }
-    return `${value >= 100 ? Math.round(value) : value.toFixed(1)} ${units[unit]}`;
-  }
-
-  function formatDuration(ms: number): string {
-    const s = Math.max(0, Math.round(ms / 1000));
-    if (s < 60) return `${s}s`;
-    const m = Math.floor(s / 60);
-    if (m < 60) return `${m}m${String(s % 60).padStart(2, "0")}s`;
-    return `${Math.floor(m / 60)}h${String(m % 60).padStart(2, "0")}m`;
-  }
-
-  const BAR_WIDTH = 30;
-
   try {
     await connectForUpload(client, { sessionStr, botToken });
     console.log(`Target: ${args.target}`);
@@ -170,40 +150,19 @@ export async function runUpload(argv: string[]): Promise<void> {
       const size = statSync(abs).size;
       const name = basename(abs);
       const startedAt = Date.now();
-      let lastPct = -1;
 
       console.log(`Uploading ${name} (${formatBytes(size)})...`);
-      // teleproto calls this with a single fraction 0..1.
-      function onProgress(fraction: unknown): void {
-        const ratio = Number(fraction);
-        if (!Number.isFinite(ratio)) return;
-        const clamped = Math.min(1, Math.max(0, ratio));
-        const pct = Math.floor(clamped * 100);
-        if (pct === lastPct) return;
-        lastPct = pct;
-        const filled = Math.round(clamped * BAR_WIDTH);
-        const bar = "#".repeat(filled) + "-".repeat(BAR_WIDTH - filled);
-        const now = Date.now();
-        const elapsed = formatDuration(now - startedAt);
-        const speed =
-          now > startedAt
-            ? ` ${formatBytes((clamped * size) / ((now - startedAt) / 1000))}/s`
-            : "";
-        const line =
-          `  [${bar}] ${String(pct).padStart(3)}% ` +
-          `(${formatBytes(clamped * size)}/${formatBytes(size)}) ${elapsed}${speed}`;
-        process.stdout.write(`\r${line.padEnd(process.stdout.columns ?? line.length + 2)}`);
-      }
-
+      const bar = createProgressBar("", size);
       const msg = await client.sendFile(args.target!, {
         file: abs,
         caption: args.caption,
         workers: args.workers,
         forceDocument: args.forceDocument,
         silent: args.silent || undefined,
-        progressCallback: onProgress,
+        // teleproto calls this with a single fraction 0..1.
+        progressCallback: (fraction: unknown) => bar.update(fraction),
       } as Parameters<TelegramClient["sendFile"]>[1]);
-      process.stdout.write("\n");
+      bar.finish();
       console.log(`  sent in ${formatDuration(Date.now() - startedAt)} as message id ${msg.id}`);
     }
   } catch (err) {

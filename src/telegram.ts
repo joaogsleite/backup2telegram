@@ -1,4 +1,4 @@
-import { TelegramClient } from "teleproto";
+import { Logger, TelegramClient } from "teleproto";
 import { StringSession } from "teleproto/sessions";
 
 export function createClient(
@@ -6,15 +6,12 @@ export function createClient(
   apiId: number,
   apiHash: string,
 ): TelegramClient {
-  const client = new TelegramClient(new StringSession(sessionStr), apiId, apiHash, {
+  // Pre-leveled logger: silences teleproto's INFO chatter (including the
+  // constructor banner) so our own progress lines stay clean. Errors surface.
+  return new TelegramClient(new StringSession(sessionStr), apiId, apiHash, {
     connectionRetries: 5,
+    baseLogger: new Logger("error" as never),
   });
-  // Silence teleproto's INFO chatter so our own progress lines stay clean.
-  // Errors still surface.
-  client.setLogLevel(
-    "error" as Parameters<TelegramClient["setLogLevel"]>[0],
-  );
-  return client;
 }
 
 /** Non-interactive connect for uploads. Throws on revoked/expired session. */
