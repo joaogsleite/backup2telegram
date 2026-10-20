@@ -17,12 +17,12 @@
  * No global installs needed: `npm install` provides ./node_modules/.bin/tsx
  * and the shebang above resolves it via `npx --no-install tsx` locally.
  */
-import { loadDotEnv } from "./env.js";
-import { runChats } from "./chats.js";
-import { runDownload } from "./download.js";
-import { runFiles } from "./files.js";
-import { runLogin } from "./login.js";
-import { runUpload } from "./upload.js";
+import { loadDotEnv } from "./helpers/env.js";
+import { runChats } from "./commands/chats/index.js";
+import { runDownload } from "./commands/download/index.js";
+import { runFiles } from "./commands/files/index.js";
+import { runLogin } from "./commands/login/index.js";
+import { runUpload } from "./commands/upload/index.js";
 
 loadDotEnv();
 

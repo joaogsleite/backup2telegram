@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "7zip-bin": "^5.2.0",
     "teleproto": "^1.230.1",
     "tsx": "^4.23.15"
   },

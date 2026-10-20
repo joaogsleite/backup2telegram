@@ -50,6 +50,19 @@ export function getBotToken(): string {
   return process.env.TG_BOT_TOKEN || process.env.BOT_TOKEN || "";
 }
 
+/** Exits unless a user session or bot token is configured. */
+export function requireAuth(): { sessionStr: string; botToken: string } {
+  const sessionStr = getSessionStr();
+  const botToken = getBotToken();
+  if (!sessionStr && !botToken) {
+    console.error(
+      "Missing TG_SESSION (user) or TG_BOT_TOKEN (bot). Run ./src/index.ts login once to generate TG_SESSION.",
+    );
+    process.exit(1);
+  }
+  return { sessionStr, botToken };
+}
+
 export function getEnvTarget(): string {
   return (
     process.env.TG_TARGET ||

@@ -1,28 +1,12 @@
 /**
- * Interactive login to generate TG_SESSION for the upload command.
- * Called by ./index.ts - not directly executable.
+ * The login command: interactive login, prints TG_SESSION to save in .env.
  */
 import { createInterface } from "node:readline/promises";
 import { StringSession } from "teleproto/sessions";
-import { requireApiCredentials } from "./env.js";
-import { createClient } from "./telegram.js";
+import { requireApiCredentials } from "../../helpers/env.js";
+import { createClient } from "../../helpers/telegram.js";
 
-export function printLoginUsage(): void {
-  console.log(`Usage:
-  ./src/index.ts login
-
-Env:
-  TG_API_ID, TG_API_HASH (required)
-
-Prints a session string. Save it as TG_SESSION in .env.`);
-}
-
-export async function runLogin(argv: string[]): Promise<void> {
-  if (argv.includes("-h") || argv.includes("--help")) {
-    printLoginUsage();
-    return;
-  }
-
+export async function executeLogin(): Promise<void> {
   const { apiId, apiHash } = requireApiCredentials();
   const client = createClient("", apiId, apiHash);
 
