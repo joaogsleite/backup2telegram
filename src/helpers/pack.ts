@@ -5,9 +5,9 @@
  * node:child_process - no wrapper dependency.
  */
 import { spawn } from "node:child_process";
-import { chmodSync, existsSync, mkdtempSync, readdirSync, rmSync, statSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { basename, join, resolve } from "node:path";
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, statSync } from "node:fs";
+import { basename, dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { path7za } from "7zip-bin";
 import { formatBytes } from "./format.js";
 import { createProgressBar } from "./progress.js";
@@ -17,8 +17,14 @@ export interface PackOptions {
   volumeSize: string;
   /** Compression level 0-9, mapped to -mx. */
   level: number;
-  /** Parent directory for temp archives. Defaults to os.tmpdir(). */
+  /** Parent directory for temp archives. Defaults to ./tmp in this repo. */
   workDir?: string;
+}
+
+/** Default temp dir: ./tmp in this repo, regardless of cwd. */
+function defaultWorkDir(): string {
+  const here = dirname(fileURLToPath(import.meta.url));
+  return resolve(here, "..", "..", "tmp");
 }
 
 export interface PackedArchive {
@@ -154,7 +160,9 @@ export async function packToVolumes(
   }
 
   const name = basename(abs);
-  const dir = mkdtempSync(join(resolve(opts.workDir ?? tmpdir()), "backup2telegram-"));
+  const parent = resolve(opts.workDir ?? defaultWorkDir());
+  mkdirSync(parent, { recursive: true });
+  const dir = mkdtempSync(join(parent, "backup2telegram-"));
   const archive = join(dir, `${name}.7z`);
   const totalBytes = sourceByteSize(abs);
 

@@ -23,7 +23,7 @@ export interface PlanOptions {
   volumeBytes: number;
   /** 7z compression level 0-9. */
   level: number;
-  /** Parent dir for temp archives. Defaults to os.tmpdir(). */
+  /** Parent dir for temp archives. Defaults to ./tmp in this repo. */
   workDir?: string;
   /** Base caption for packed volumes. */
   caption?: string;

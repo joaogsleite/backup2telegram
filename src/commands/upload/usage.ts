@@ -20,7 +20,7 @@ Options:
   --level <n>           7z compression level 0-9 (default 5, 0 = store only)
   --volume-size <size>  max bytes per archive volume, e.g. 2000m, 500k, 2g
                         (default 2000m; must fit Telegram's per-file cap)
-  --work-dir <dir>      parent dir for temporary archives (default: os tmpdir)
+  --work-dir <dir>      parent dir for temporary archives (default: ./tmp)
   --keep-archive        keep the temporary .7z volumes instead of deleting them
   --dry-run             show what would be packed/uploaded without doing it
   --force-document      send as generic file, skip photo/video detection (default)
