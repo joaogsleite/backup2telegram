@@ -1,0 +1,21 @@
+{
+  "name": "backup2telegram",
+  "version": "1.0.0",
+  "description": "",
+  "author": "joaogsleite",
+  "type": "module",
+  "scripts": {
+    "upload": "tsx ./src/index.ts upload",
+    "login": "tsx ./src/index.ts login",
+    "list": "tsx ./src/index.ts list",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "teleproto": "^1.230.1",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}
